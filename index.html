@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoundVault | Music Space Blog & Reviews</title>
+  <meta name="description" content="Discover new music, hidden gems, and in-depth album reviews with interactive Spotify & Apple Music streaming embeds.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <div id="app" class="app-container">
+    <!-- Navbar Component Container -->
+    <header id="navbar-root" class="navbar-wrapper"></header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Hero Section Container -->
+      <section id="hero-root" class="hero-wrapper"></section>
+
+      <!-- Main Blog Layout Container -->
+      <div class="content-container">
+        <!-- Filter Bar Container -->
+        <div id="filter-root" class="filter-wrapper"></div>
+
+        <!-- Section Heading & Results Summary -->
+        <div class="section-header">
+          <div class="section-title-group">
+            <h2 id="section-title" class="section-title">Latest Discoveries</h2>
+            <span id="results-count" class="results-count-badge">0 posts</span>
+          </div>
+          <div class="sort-group">
+            <label for="sort-select" class="sort-label">Sort by:</label>
+            <select id="sort-select" class="sort-dropdown">
+              <option value="latest">Latest Releases</option>
+              <option value="highest_rated">Highest Rated</option>
+              <option value="oldest">Oldest First</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Post Cards Grid Container -->
+        <div id="grid-root" class="posts-grid"></div>
+
+        <!-- Empty State Container -->
+        <div id="empty-state" class="empty-state hidden">
+          <div class="empty-icon"><i data-lucide="disc-3"></i></div>
+          <h3>No music entries found</h3>
+          <p>Try adjusting your search terms or filter selection to find what you're looking for.</p>
+          <button id="reset-filters-btn" class="btn btn-secondary">Reset All Filters</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer Container -->
+    <footer id="footer-root" class="footer-wrapper"></footer>
+
+    <!-- Modals Container -->
+    <div id="modal-root"></div>
+  </div>
+
+  <!-- Application Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
