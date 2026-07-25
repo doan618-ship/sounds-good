@@ -30,7 +30,8 @@ const pageGradient = `radial-gradient(ellipse at top left, ${bg1} 0%, transparen
 
 <BaseLayout 
   title={`${data.title} (${data.releaseYear}) | ${data.artist} - Album Review`}
-  description={data.summary}
+  summary={data.summary}
+  coverImage={data.coverImage}
 >
   <!-- Darkened 2-color gradient background -->
   <div class="page-gradient-bg" style={`background: ${pageGradient};`}></div>
