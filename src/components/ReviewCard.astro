@@ -17,12 +17,12 @@ const formattedDate = new Date(data.pubDate).toLocaleDateString('vi-VN', {
 ---
 
 <article class="review-card">
-  <a href={`${import.meta.env.BASE_URL}reviews/${id}`} class="card-link" aria-label={`Read review of ${data.title} by ${data.artist}`}>
+  <a href={`${import.meta.env.BASE_URL}reviews/${id}`} class="card-link" aria-label={`Đọc review ${data.title} | ${data.artist}`}>
     <!-- 1/2 Left on Mobile -->
     <div class="cover-wrapper">
       <img 
         src={data.coverImage} 
-        alt={`${data.title} by ${data.artist} album cover`} 
+        alt={`${data.title} | ${data.artist} hình album`} 
         loading="lazy" 
         width="300"
         height="300"

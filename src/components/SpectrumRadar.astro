@@ -55,7 +55,15 @@ const axes = items.map((item, idx) => {
 ---
 
 <div class="spectrum-radar-container">
-  <h3 class="radar-title">Phân tích</h3>
+  <div class="radar-header">
+    <h3 class="radar-title">Phân tích</h3>
+    <div class="radar-tooltip-wrapper">
+      <i class="bi bi-question-circle tooltip-trigger" aria-label="Thông tin thêm"></i>
+      <div class="tooltip-box" role="tooltip">
+        Dựa theo Mô hình Đánh giá 6 khía cạnh. <a href={`${import.meta.env.BASE_URL}about`} aria-label="Tìm hiểu thêm về Mô hình Đánh giá 6 khía cạnh"  class="tooltip-link">Tìm hiểu thêm</a>
+      </div>
+    </div>
+  </div>
   
   <div class="radar-grid">
     <div class="svg-wrapper">
@@ -142,13 +150,105 @@ const axes = items.map((item, idx) => {
     margin: 2rem 0;
   }
 
+  .radar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
   .radar-title {
     font-size: 1.1rem;
     font-weight: 700;
-    margin-bottom: 1.25rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
+    margin-bottom: 0;
+  }
+
+  .radar-tooltip-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .tooltip-trigger {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .radar-tooltip-wrapper:hover .tooltip-trigger {
+    color: var(--text-primary);
+  }
+
+  .tooltip-box {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 240px;
+    padding: 0.6rem 0.8rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    transform: translateY(4px);
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+  }
+
+  .tooltip-box::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 6px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--bg-secondary);
+    border-left: 1px solid var(--border-light);
+    border-top: 1px solid var(--border-light);
+    transform: rotate(45deg);
+    z-index: 1;
+  }
+
+  /* Invisible bridge extending above the tooltip box to cover the 8px gap */
+  .tooltip-box::after {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: -10px;
+    right: -10px;
+    height: 14px;
+  }
+
+  .radar-tooltip-wrapper:hover .tooltip-box,
+  .radar-tooltip-wrapper:focus-within .tooltip-box {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .tooltip-link {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+    transition: color 0.15s ease;
+  }
+
+  .tooltip-link:hover {
+    color: var(--color-accent-high);
   }
 
   .radar-grid {
