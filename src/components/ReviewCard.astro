@@ -17,7 +17,7 @@ const formattedDate = new Date(data.pubDate).toLocaleDateString('en-US', {
 ---
 
 <article class="review-card">
-  <a href={`/reviews/${id}`} class="card-link" aria-label={`Read review of ${data.title} by ${data.artist}`}>
+  <a href={`${import.meta.env.BASE_URL}reviews/${id}`} class="card-link" aria-label={`Read review of ${data.title} by ${data.artist}`}>
     <!-- 1/2 Left on Mobile -->
     <div class="cover-wrapper">
       <img 
