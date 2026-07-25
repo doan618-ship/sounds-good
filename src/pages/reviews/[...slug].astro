@@ -16,7 +16,7 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content } = await render(entry);
 
-const formattedDate = new Date(data.pubDate).toLocaleDateString('en-US', {
+const formattedDate = new Date(data.pubDate).toLocaleDateString('vi-VN', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -29,7 +29,7 @@ const pageGradient = `radial-gradient(ellipse at top left, ${bg1} 0%, transparen
 ---
 
 <BaseLayout 
-  title={`${data.title} by ${data.artist} — Album Review`}
+  title={`${data.title} (${data.releaseYear}) | ${data.artist} - Album Review`}
   description={data.summary}
 >
   <!-- Darkened 2-color gradient background -->
@@ -39,7 +39,7 @@ const pageGradient = `radial-gradient(ellipse at top left, ${bg1} 0%, transparen
     <!-- Header Section -->
     <header class="detail-header">
       <div class="back-link-wrapper">
-        <a href={import.meta.env.BASE_URL} class="back-link">&larr; Back to all reviews</a>
+        <a href={import.meta.env.BASE_URL} class="back-link">&larr; Quay lại</a>
       </div>
 
       <div class="header-grid">
@@ -67,7 +67,7 @@ const pageGradient = `radial-gradient(ellipse at top left, ${bg1} 0%, transparen
               </div>
             )}
           </div>
-          <span class="rating-label">Overall Score</span>
+          <span class="rating-label">Tổng điểm</span>
         </div>
 
         <!-- Rest of Content Below Top Row on Mobile -->

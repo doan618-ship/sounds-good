@@ -4,80 +4,80 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const spectrumAxes = [
   {
     icon: 'bi-music-note-beamed',
-    title: 'Melody & Harmony',
-    description: 'Evaluates hooks, chord progressions, vocal pitch arrangements, melodic memorable lines, and tonal resonance throughout the project.',
+    title: 'Giai điệu',
+    description: 'Đánh giá tính bắt tai, hòa âm, cao độ giọng hát, giai điệu dễ nhớ và độ vang âm trong suốt dự án.',
   },
   {
     icon: 'bi-sliders',
-    title: 'Production & Mixing',
-    description: 'Examines sound design, spatial engineering, frequency separation, acoustic warmth, dynamic range, and technical mixing balance.',
+    title: 'Sản xuất',
+    description: 'Kiểm tra thiết kế âm thanh, kỹ thuật không gian, phân tách tần số, độ ấm âm thanh, dải động và cân bằng trộn kỹ thuật.',
   },
   {
     icon: 'bi-file-earmark-text',
-    title: 'Lyrical Depth',
-    description: 'Measures narrative storytelling, poetic phrasing, thematic vulnerability, metaphorical imagery, and literary substance.',
+    title: 'Ca từ',
+    description: 'Đánh giá khả năng kể chuyện, cách diễn đạt thơ ca, sự dễ tổn thương trong chủ đề, hình ảnh ẩn dụ và giá trị văn học.',
   },
   {
     icon: 'bi-layers-half',
-    title: 'Cohesiveness & Concept',
-    description: 'Assesses album sequence, structural pacing, track-to-track transitions, and overarching thematic or sonic unity.',
+    title: 'Cấu trúc và chủ đề',
+    description: 'Đánh giá cấu trúc album, nhịp độ, sự chuyển tiếp giữa các bài hát, và sự thống nhất về chủ đề hoặc âm thanh.',
   },
   {
     icon: 'bi-lightbulb',
-    title: 'Originality',
-    description: 'Ponders sonic innovation, genre boundary-pushing, artistic courage, and distinct creative signature versus tired conventions.',
+    title: 'Độc đáo',
+    description: 'Đánh giá sự đổi mới về âm thanh, khả năng vượt qua các giới hạn thể loại, lòng dũng cảm nghệ thuật và dấu ấn sáng tạo riêng biệt so với các xu hướng thông thường.',
   },
   {
     icon: 'bi-globe',
-    title: 'Cultural Impact',
-    description: 'Reflects historical footprint, influence on contemporary artists, movement leadership, timelessness, and cultural resonance.',
+    title: 'Ảnh hưởng',
+    description: 'Phản ánh dấu ấn lịch sử, ảnh hưởng đối với các nghệ sĩ đương đại, vai trò lãnh đạo trong các phong trào âm nhạc, tính vượt thời gian và sự lan tỏa văn hóa.',
   },
 ];
 
 const ratingTiers = [
   {
     score: '9.0 – 10.0',
-    label: 'Masterpiece / Essential',
+    label: 'Tuyệt tác / Kinh điển',
     isHigh: true,
-    description: 'A benchmark work of art that reshapes genre boundaries and rewards endless re-listens.',
+    description: 'Một kiệt tác có sức ảnh hưởng, định hình lại các giới hạn thể loại và đáng nghe đi nghe lại nhiều lần.',
   },
   {
     score: '8.0 – 8.9',
-    label: 'Great / Highly Recommended',
+    label: 'Xuất sắc / Rất đáng nghe',
     isHigh: true,
-    description: 'Exceptional craft, strong vision, and memorable execution across almost every track.',
+    description: 'Tuyệt vời, có tầm nhìn, việc triển khai mỗi bài hát nhất quán, gần như là tuyệt vời.',
   },
   {
     score: '7.0 – 7.9',
-    label: 'Good / Solid Effort',
+    label: 'Tốt / Rất đáng nghe',
     isHigh: false,
-    description: 'Enjoyable project with impressive highlights, though slightly held back by consistency.',
+    description: 'Một album chỉn chu với những điểm nhấn ấn tượng, nhưng có thể thiếu tính nhất quán.',
   },
   {
     score: '5.0 – 6.9',
-    label: 'Average / Mixed',
+    label: 'Trung bình / Khá',
     isHigh: false,
-    description: 'Pockets of promise or decent production weighed down by filler or unfocused concepts.',
+    description: 'Một vài bài hát hứa hẹn hoặc sản xuất tốt nhưng bị lấp đầy bởi các bài hát filler hoặc ý tưởng không tập trung.',
   },
   {
-    score: 'Below 5.0',
-    label: 'Flawed / Uninspired',
+    score: 'Dưới 5.0',
+    label: 'Thiếu Sáng Tạo',
     isHigh: false,
-    description: 'Lacks technical polish, creative ambition, or genuine emotional engagement.',
+    description: 'Thiếu sự trau chuốt về mặt kỹ thuật, tham vọng sáng tạo hoặc sự gắn kết về cảm xúc.',
   },
 ];
 ---
 
 <BaseLayout 
-  title="About SoundSpec"
-  description="Learn about the SoundSpec music review philosophy, the 6-axis Sound Spectrum model, and how scores are calculated."
+  title="Giới thiệu SoundsGood"
+  description="Tìm hiểu về phong cách review của SoundsGood, 6 khía cạnh đánh giá, và cách tính điểm SoundsGood"
 >
   <div class="about-container">
     <!-- Hero Banner -->
     <header class="about-hero">
-      <h1 class="page-title">ABOUT SOUNDSPEC</h1>
+      <h1 class="page-title">Đây là gì?</h1>
       <p class="about-subtitle">
-        A minimalist, content-first platform dedicated to high-fidelity album criticism and multidimensional sonic analysis.
+        Một nền tảng tối giản, tập trung vào nội dung, dành riêng cho phê bình album âm nhạc với phân tích đa chiều.
       </p>
     </header>
 
@@ -85,25 +85,24 @@ const ratingTiers = [
 
     <!-- Mission & Why -->
     <section class="about-section">
-      <h2 class="section-heading">Why SoundSpec Exists</h2>
+      <h2 class="section-heading">Tại sao SoundsGood ra đời?</h2>
       <div class="prose-block">
         <p>
-          In an era dominated by 15-second social media clips, algorithmic playlist shuffle, and clickbait outrage, 
-          the art of listening to a full-length album from start to finish is often overlooked.
+          Trong một thời đại mà âm nhạc bị chi phối bởi những đoạn cắt ngắn 15 giây trên mạng xã hội, danh sách phát theo thuật toán và sự phẫn nộ của giới truyền thông, 
+          nghệ thuật thưởng thức trọn vẹn một album nhạc thường bị lu mờ.
         </p>
         <p>
-          <strong>SoundSpec</strong> was built to provide a clean, distraction-free environment for music lovers who appreciate 
-          thoughtful album criticism. There are no pop-up ads, no infinite feeds, and no bloated trackers—just lightning-fast static pages, 
-          deep writing, and transparent evaluation criteria.
+          <strong>SoundsGood</strong> được tạo ra để cung cấp một không gian nghe nhạc tối giản và không bị phân tâm cho những người yêu thích phê bình album một cách nghiêm túc. 
+          Không có quảng cáo pop-up, không có nguồn cấp dữ liệu vô tận và không có trình theo dõi rườm rà—chỉ có các trang tĩnh siêu tốc, nội dung sâu sắc và tiêu chí đánh giá minh bạch.
         </p>
       </div>
     </section>
 
     <!-- Spectrum Model Explanation -->
     <section class="about-section">
-      <h2 class="section-heading">The 6-Axis Sound Spectrum Model</h2>
+      <h2 class="section-heading">Mô hình Đánh giá 6 Khía cạnh</h2>
       <p class="section-lead">
-        Rather than relying on a single arbitrary rating number, every review features a 6-axis radar breakdown to capture the multidimensional nature of music.
+        Thay vì chỉ dựa vào một con số duy nhất, SoundsGood sử dụng mô hình radar 6 khía cạnh để phân tích đa chiều mọi khía cạnh của âm nhạc.
       </p>
 
       <div class="spectrum-grid">
@@ -123,9 +122,9 @@ const ratingTiers = [
 
     <!-- Overall Rating Breakdown -->
     <section class="about-section">
-      <h2 class="section-heading">Understanding Overall Scores</h2>
+      <h2 class="section-heading">Hiểu về Điểm số SoundsGood</h2>
       <p class="section-lead">
-        Overall scores range from <strong>0.0 to 10.0</strong>. Scores are assigned holistically based on total artistic accomplishment and weighted spectrum performance.
+        Điểm số SoundsGood dao động từ <strong>0.0 đến 10.0</strong>. Điểm số được đánh giá dựa trên tổng thể của mô hình 6 khía cạnh.
       </p>
 
       <div class="rating-tiers-list">

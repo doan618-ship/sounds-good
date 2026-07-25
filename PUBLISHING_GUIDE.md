@@ -1,12 +1,12 @@
-# SoundSpec — GitHub Pages Publishing & Deployment Guide
+# SoundsGood — GitHub Pages Publishing & Deployment Guide
 
-This guide details how to publish and deploy your **SoundSpec Music Review Archive** to **GitHub Pages** using automated GitHub Actions CI/CD workflows.
+This guide details how to publish and deploy your **SoundsGood Music Review Archive** to **GitHub Pages** using automated GitHub Actions CI/CD workflows.
 
 ---
 
 ## 🚀 Automated Deployment to GitHub Pages
 
-SoundSpec is built with **Astro (Static Site Generation)**. A pre-configured GitHub Actions workflow (`.github/workflows/deploy.yml`) automatically builds and deploys your site whenever you push changes to the `main` branch.
+SoundsGood is built with **Astro (Static Site Generation)**. A pre-configured GitHub Actions workflow (`.github/workflows/deploy.yml`) automatically builds and deploys your site whenever you push changes to the `main` branch.
 
 ### Prerequisites
 - A **GitHub Account**.
@@ -22,7 +22,7 @@ If you haven't already pushed your project to GitHub:
 ```bash
 git init
 git add .
-git commit -m "Initial commit of SoundSpec review app"
+git commit -m "Initial commit of SoundsGood review app"
 git branch -M main
 git remote add origin https://github.com/<your-username>/<your-repo-name>.git
 git push -u origin main

@@ -16,21 +16,19 @@ const allTags = Array.from(
 ---
 
 <BaseLayout 
-  title="SoundSpec — Music Review Archive" 
-  description="Minimalist, content-first album reviews and sound spectrum ratings."
+  title="SoundsGood - Album Review" 
+  description="Review album tối giản. Một dự án của Doan Vo."
 >
   <section class="hero-section">
-    <h1 class="hero-title">MUSIC REVIEWS & SOUND SPECTRUM</h1>
-    <p class="hero-subtitle">
-      Old-school, minimalist, and content-first album criticism. Ultra-fast static performance.
-    </p>
-  </section>
+    <h1 class="hero-title">SoundsGood</h1>
+    <p class="hero-subtitle"> Những âm thanh có ảnh hưởng.</p>
+    </section>
 
   <section class="filter-section" id="tags">
     <div class="filter-header">
-      <span class="filter-label">Filter by Tag:</span>
+      <span class="filter-label">Lọc theo Tag:</span>
       <div class="tag-filter-container">
-        <button class="tag-btn active" data-tag="all">All ({sortedReviews.length})</button>
+        <button class="tag-btn active" data-tag="all">Tất cả ({sortedReviews.length})</button>
         {allTags.map((tag) => (
           <button class="tag-btn" data-tag={tag}>
             {tag}

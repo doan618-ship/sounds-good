@@ -9,7 +9,7 @@ const { review } = Astro.props;
 const { data, id } = review;
 const isHigh = data.rating >= 8.0;
 
-const formattedDate = new Date(data.pubDate).toLocaleDateString('en-US', {
+const formattedDate = new Date(data.pubDate).toLocaleDateString('vi-VN', {
   year: 'numeric',
   month: 'short',
   day: 'numeric',

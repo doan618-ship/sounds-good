@@ -142,6 +142,17 @@ hr {
   line-height: 1.75;
 }
 
+.prose a {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+
+.prose a:hover {
+  color: var(--text-primary);
+}
+
 .prose h2 {
   font-size: 1.5rem;
   margin-top: 2rem;

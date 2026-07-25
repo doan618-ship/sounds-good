@@ -6,12 +6,12 @@ interface Props {
 const { spectrumRating } = Astro.props;
 
 const items = [
-  { label: 'Melody & Harmony', icon: 'bi-music-note-beamed' },
-  { label: 'Production & Mixing', icon: 'bi-sliders' },
-  { label: 'Lyrical Depth', icon: 'bi-file-earmark-text' },
-  { label: 'Cohesiveness', icon: 'bi-layers-half' },
-  { label: 'Originality', icon: 'bi-lightbulb' },
-  { label: 'Cultural Impact', icon: 'bi-globe' },
+  { label: 'Giai điệu', icon: 'bi-music-note-beamed' },
+  { label: 'Sản xuất', icon: 'bi-sliders' },
+  { label: 'Ca từ', icon: 'bi-file-earmark-text' },
+  { label: 'Cấu trúc và chủ đề', icon: 'bi-layers-half' },
+  { label: 'Độc đáo', icon: 'bi-lightbulb' },
+  { label: 'Ảnh hưởng', icon: 'bi-globe' },
 ];
 
 const size = 340;
@@ -55,7 +55,7 @@ const axes = items.map((item, idx) => {
 ---
 
 <div class="spectrum-radar-container">
-  <h3 class="radar-title">Sound Spectrum Breakdown</h3>
+  <h3 class="radar-title">Phân tích</h3>
   
   <div class="radar-grid">
     <div class="svg-wrapper">
