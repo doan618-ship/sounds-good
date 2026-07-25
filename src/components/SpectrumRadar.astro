@@ -1,0 +1,294 @@
+---
+interface Props {
+  spectrumRating: [number, number, number, number, number, number];
+}
+
+const { spectrumRating } = Astro.props;
+
+const items = [
+  { label: 'Melody & Harmony', icon: 'bi-music-note-beamed' },
+  { label: 'Production & Mixing', icon: 'bi-sliders' },
+  { label: 'Lyrical Depth', icon: 'bi-file-earmark-text' },
+  { label: 'Cohesiveness', icon: 'bi-layers-half' },
+  { label: 'Originality', icon: 'bi-lightbulb' },
+  { label: 'Cultural Impact', icon: 'bi-globe' },
+];
+
+const size = 340;
+const center = size / 2;
+const maxRadius = 100;
+const levels = [2.5, 5.0, 7.5, 10.0];
+
+// Calculate point coordinates given an index (0 to 5) and rating value (0 to 10)
+function getCoordinates(index: number, value: number) {
+  const angle = (Math.PI / 3) * index - Math.PI / 2; // -90 deg start at top
+  const radius = (value / 10) * maxRadius;
+  const x = center + radius * Math.cos(angle);
+  const y = center + radius * Math.sin(angle);
+  return { x, y };
+}
+
+// Polygon points for ratings polygon
+const ratingPoints = spectrumRating
+  .map((val, idx) => {
+    const { x, y } = getCoordinates(idx, val);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  })
+  .join(' ');
+
+// Axis lines & icon coordinates
+const axes = items.map((item, idx) => {
+  const outer = getCoordinates(idx, 10);
+  const labelAngle = (Math.PI / 3) * idx - Math.PI / 2;
+  const labelRadius = maxRadius + 22;
+  const lx = center + labelRadius * Math.cos(labelAngle);
+  const ly = center + labelRadius * Math.sin(labelAngle);
+  
+  return {
+    ...item,
+    outer,
+    lx,
+    ly,
+    value: spectrumRating[idx],
+  };
+});
+---
+
+<div class="spectrum-radar-container">
+  <h3 class="radar-title">Sound Spectrum Breakdown</h3>
+  
+  <div class="radar-grid">
+    <div class="svg-wrapper">
+      <svg viewBox={`0 0 ${size} ${size}`} class="radar-svg" aria-label="Spectrum Rating Radar Chart">
+        <!-- Background Grid Concentric Hexagons -->
+        {levels.map((level) => {
+          const points = [0, 1, 2, 3, 4, 5]
+            .map((i) => {
+              const { x, y } = getCoordinates(i, level);
+              return `${x.toFixed(1)},${y.toFixed(1)}`;
+            })
+            .join(' ');
+          return <polygon points={points} class="grid-ring" />;
+        })}
+
+        <!-- Axis Lines -->
+        {axes.map((axis) => (
+          <line 
+            x1={center} 
+            y1={center} 
+            x2={axis.outer.x} 
+            y2={axis.outer.y} 
+            class="axis-line" 
+          />
+        ))}
+
+        <!-- Rating Polygon Fill -->
+        <polygon points={ratingPoints} class="rating-polygon" />
+
+        <!-- Rating Vertex Dots -->
+        {spectrumRating.map((val, idx) => {
+          const { x, y } = getCoordinates(idx, val);
+          return <circle cx={x} cy={y} r="3.5" class="rating-dot" />;
+        })}
+
+        <!-- Axis Icon Labels (Displays ONLY the icon) -->
+        {axes.map((axis) => (
+          <foreignObject
+            x={axis.lx - 12}
+            y={axis.ly - 12}
+            width="24"
+            height="24"
+            class="axis-foreign-obj"
+          >
+            <div class="axis-icon-box" title={axis.label}>
+              <i class={`bi ${axis.icon}`}></i>
+            </div>
+          </foreignObject>
+        ))}
+      </svg>
+    </div>
+
+    <!-- Rating Legend List (Displays icon, item name, and formatted score) -->
+    <div class="rating-list">
+      {items.map((item, idx) => {
+        const val = spectrumRating[idx];
+        const isHigh = val >= 8.0;
+        return (
+          <div class="rating-item">
+            <div class="item-name-box">
+              <i class={`bi ${item.icon} legend-icon`}></i>
+              <span class="item-name">{item.label}</span>
+            </div>
+            <div class="item-bar-bg">
+              <div class={`item-bar-fill ${isHigh ? 'fill-high' : ''}`} style={`width: ${(val * 10)}%`}></div>
+            </div>
+            <div class="item-val-group">
+              {isHigh && <i class="bi bi-hand-thumbs-up score-thumbs-up"></i>}
+              <span class={`item-val ${isHigh ? 'score-high' : ''}`}>{val.toFixed(1)}</span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
+<style>
+  .spectrum-radar-container {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .radar-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+  }
+
+  .radar-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .radar-grid {
+      grid-template-columns: 340px 1fr;
+    }
+  }
+
+  .svg-wrapper {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .radar-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .grid-ring {
+    fill: none;
+    stroke: var(--border-color);
+    stroke-width: 1;
+    stroke-dasharray: 2,2;
+  }
+
+  .axis-line {
+    stroke: var(--border-color);
+    stroke-width: 1;
+  }
+
+  .rating-polygon {
+    fill: var(--color-radar-fill);
+    stroke: var(--color-white);
+    stroke-width: 2;
+  }
+
+  .rating-dot {
+    fill: var(--color-white);
+    stroke: var(--color-black);
+    stroke-width: 1;
+  }
+
+  .axis-foreign-obj {
+    overflow: visible;
+  }
+
+  .axis-icon-box {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+
+  /* Rating List Bar View */
+  .rating-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .rating-item {
+    display: grid;
+    grid-template-columns: 170px 1fr 55px;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .item-name-box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: hidden;
+  }
+
+  .legend-icon {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .item-name {
+    color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .item-bar-bg {
+    height: 6px;
+    background-color: var(--bg-primary);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+  }
+
+  .item-bar-fill {
+    height: 100%;
+    background-color: var(--color-white);
+    border-radius: 3px;
+  }
+
+  .fill-high {
+    background-color: var(--color-accent-high) !important;
+  }
+
+  .item-val-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.3rem;
+  }
+
+  .item-val {
+    font-weight: 700;
+    font-family: var(--font-sans);
+    text-align: right;
+    color: var(--text-primary);
+  }
+
+  .score-high {
+    color: var(--color-accent-high) !important;
+    font-weight: 800 !important;
+  }
+
+  .score-thumbs-up {
+    color: var(--color-accent-high);
+    font-size: 0.85rem;
+  }
+</style>

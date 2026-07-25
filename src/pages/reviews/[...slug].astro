@@ -1,0 +1,331 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpectrumRadar from '../../components/SpectrumRadar.astro';
+import SpotifyEmbed from '../../components/SpotifyEmbed.astro';
+
+export async function getStaticPaths() {
+  const reviews = await getCollection('reviews');
+  return reviews.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const formattedDate = new Date(data.pubDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const isHigh = data.rating >= 8.0;
+const bg1 = data.bgColors?.[0] || 'var(--bg-card)';
+const bg2 = data.bgColors?.[1] || 'var(--bg-primary)';
+const pageGradient = `radial-gradient(ellipse at top left, ${bg1} 0%, transparent 65%), radial-gradient(ellipse at center right, ${bg2} 0%, transparent 70%), var(--bg-primary)`;
+---
+
+<BaseLayout 
+  title={`${data.title} by ${data.artist} — Album Review`}
+  description={data.summary}
+>
+  <!-- Darkened 2-color gradient background -->
+  <div class="page-gradient-bg" style={`background: ${pageGradient};`}></div>
+
+  <article class="review-detail">
+    <!-- Header Section -->
+    <header class="detail-header">
+      <div class="back-link-wrapper">
+        <a href="/" class="back-link">&larr; Back to all reviews</a>
+      </div>
+
+      <div class="header-grid">
+        <!-- 1/2 Left on Mobile -->
+        <div class="cover-wrapper">
+          <img 
+            src={data.coverImage} 
+            alt={`${data.title} by ${data.artist} album cover`} 
+            width="300"
+            height="300"
+            decoding="async"
+            class="cover-img"
+          />
+        </div>
+
+        <!-- 1/2 Right on Mobile -->
+        <div class="detail-rating-side">
+          <div class="rating-badge-container">
+            <span class={`detail-score-val ${isHigh ? 'score-high' : ''}`}>
+              {data.rating.toFixed(1)}
+            </span>
+            {isHigh && (
+              <div class="thumbs-up-container">
+                <i class="bi bi-hand-thumbs-up score-thumbs-up"></i>
+              </div>
+            )}
+          </div>
+          <span class="rating-label">Overall Score</span>
+        </div>
+
+        <!-- Rest of Content Below Top Row on Mobile -->
+        <div class="header-info">
+          <div class="meta-row">
+            <span class="artist">{data.artist}</span>
+            <span class="meta-dot">&bull;</span>
+            <time datetime={data.pubDate.toISOString()} class="date">{formattedDate}</time>
+          </div>
+
+          <h1 class="album-title">
+            {data.title} <span class="release-year">({data.releaseYear})</span>
+          </h1>
+
+          <p class="summary-lead">{data.summary}</p>
+
+          <div class="tag-list">
+            {data.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <hr class="section-divider" />
+
+    <!-- 6-Axis Spectrum Radar Component -->
+    <SpectrumRadar spectrumRating={data.spectrumRating} />
+
+    <!-- Spotify Embed Component -->
+    <SpotifyEmbed spotifyId={data.spotifyId} />
+
+    <!-- Article Content -->
+    <section class="review-body prose">
+      <Content />
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-gradient-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.85;
+  }
+
+  .review-detail {
+    position: relative;
+  }
+
+  .back-link-wrapper {
+    margin-bottom: 1.5rem;
+  }
+
+  .back-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color 0.15s ease;
+  }
+
+  .back-link:hover {
+    color: var(--text-primary);
+  }
+
+  /* Mobile Grid: Row 1 = 1/2 cover, 1/2 rating side-by-side. Row 2 = Rest of content */
+  .header-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .cover-wrapper {
+    grid-column: 1 / 2;
+    grid-row: 1;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    width: 100%;
+  }
+
+  .cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .detail-rating-side {
+    grid-column: 2 / 3;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+  }
+
+  .header-info {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Desktop Grid: 240px cover | 1fr content | auto rating */
+  @media (min-width: 640px) {
+    .header-grid {
+      grid-template-columns: 240px 1fr auto;
+      gap: 1.75rem;
+      align-items: center;
+    }
+
+    .cover-wrapper {
+      grid-column: 1;
+      grid-row: 1;
+      width: 240px;
+    }
+
+    .header-info {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .detail-rating-side {
+      grid-column: 3;
+      grid-row: 1;
+      width: auto;
+      height: auto;
+      aspect-ratio: auto;
+      padding: 1.25rem 1.75rem;
+      min-width: 130px;
+    }
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .artist {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+
+  .album-title {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    font-style: italic;
+    color: var(--color-white);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+  }
+
+  .release-year {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+
+  @media (min-width: 640px) {
+    .album-title {
+      font-size: 2.75rem;
+    }
+    .release-year {
+      font-size: 1.85rem;
+    }
+  }
+
+  .rating-badge-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .detail-score-val {
+    font-family: var(--font-sans);
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  @media (min-width: 640px) {
+    .detail-score-val {
+      font-size: 3.5rem;
+    }
+  }
+
+  .score-high {
+    color: var(--color-accent-high) !important;
+    font-weight: 800 !important;
+  }
+
+  .thumbs-up-container {
+    margin-top: 0.35rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .score-thumbs-up {
+    color: var(--color-accent-high);
+    font-size: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .score-thumbs-up {
+      font-size: 1.75rem;
+    }
+  }
+
+  .rating-label {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .summary-lead {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-divider {
+    border-top: 1px solid var(--border-color);
+    margin: 2.5rem 0;
+  }
+
+  .review-body {
+    margin-top: 2rem;
+  }
+</style>

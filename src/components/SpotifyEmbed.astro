@@ -1,0 +1,40 @@
+---
+interface Props {
+  spotifyId: string;
+  type?: 'album' | 'track';
+}
+
+const { spotifyId, type = 'album' } = Astro.props;
+
+// Determine embed URL path based on type or id format
+const embedUrl = `https://open.spotify.com/embed/${type}/${spotifyId}?utm_source=generator`;
+---
+
+<div class="spotify-embed-wrapper">
+  <iframe
+    src={embedUrl}
+    width="100%"
+    height="352"
+    allowfullscreen=""
+    frameborder= "0"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy"
+    title="Spotify Embedded Player"
+    class="spotify-iframe"
+  ></iframe>
+</div>
+
+<style>
+  .spotify-embed-wrapper {
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+  }
+
+  .spotify-iframe {
+    border-radius: 12px;
+    display: block;
+  }
+</style>

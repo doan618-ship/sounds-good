@@ -1,111 +1,126 @@
-# Implementation Plan - Modern Music Space Web Blog
+# Implementation Plan - Refactor Music Review Web App to Astro SSG
 
-Build and publish a state-of-the-art music space web blog featuring **New Music**, **Hidden Gems**, and **In-Depth Reviews**, equipped with embedded **Spotify & Apple Music** players, interactive rating widgets, search & filtering, and an in-app Post Publisher tool.
-
----
-
-## Technical Stack & Architecture
-
-- **Framework**: Vite + React (Fast build, client-side routing, modular components)
-- **Styling**: Modern CSS Glassmorphism + Dark Mode aesthetic (Glowing neon accents, translucent cards, smooth micro-interactions, responsive typography)
-- **Icons**: Lucide React
-- **Data Management**: Structured JSON content database (`src/data/posts.json`) + local storage draft saving + In-App Post Creator modal with Live Preview & JSON exporter.
-- **Audio & Streaming**: Official Spotify & Apple Music iframe embed integration with quick launch badges.
+Refactor the current music review web app draft into a fast, minimalist, content-first static site built with the **Astro Framework**. The app will leverage **Astro Content Collections** with **Zod validation** for Markdown review posts, SVG-rendered 6-axis **spectrum rating radar charts**, lazy-loaded **Spotify iFrame embeds**, and a **GitHub Actions workflow** for automated GitHub Pages deployment.
 
 ---
 
 ## User Review Required
 
 > [!NOTE]
-> The app will feature a built-in **Post Publisher Studio** modal, allowing you to visually draft new album reviews, paste Spotify/Apple Music URLs, rate track aspects (Production, Lyrics, Vibe), preview the post live, and export the generated JSON directly into your blog content.
+> **Architectural Transition**: The project will be refactored from a vanilla JS draft to a modern **Astro Static Site Generation (SSG)** structure. All review content will reside in structured Markdown files with frontmatter Zod validation.
 
-> [!TIP]
-> Free hosting options (Vercel, Netlify, GitHub Pages) are included in the publishing guide for easy 1-click deployment.
-
----
-
-## Proposed Features & UI Components
-
-### 1. Header & Navigation (`Navbar.jsx`)
-- Brand Identity ("SoundVault" / "Sonic Canvas" / "Music Space Studio")
-- Quick Filter Links (All, New Music, Hidden Gems, In-depth Reviews)
-- Search Bar (filter by artist, album, genre, tag)
-- "+ Add Review" Creator Button to trigger post draft studio modal
-
-### 2. Featured Hero Banner (`HeroSection.jsx`)
-- High-impact visual display for the latest "In-Depth Review" or "Pick of the Week"
-- Glassmorphism overlay, album cover backdrop, key rating score, quick play buttons, and direct link badges to Spotify and Apple Music.
-
-### 3. Category & Genre Filter Toolbar (`FilterBar.jsx`)
-- Category pills: `All`, `🔥 New Music`, `💎 Hidden Gem`, `📝 In-Depth Review`
-- Genre tags: `Indie / Alternative`, `Electronic / Synthwave`, `R&B / Soul`, `Hip-Hop`, `Ambient / Post-Rock`
-- Sort options: `Latest`, `Highest Rated`, `Trending`
-
-### 4. Post Card Grid & Detail View Modal (`PostCard.jsx`, `PostDetailModal.jsx`)
-- **Card View**: High-res album artwork, post category tag, rating badge, release date, snippet quote, and quick streaming links.
-- **Detail View**:
-  - Full review article markdown / text
-  - Embedded **Spotify iFrame Player** / **Apple Music iFrame Player** (switchable tabs)
-  - **Rating Breakdown Radar/Progress Bars** (Production 9.5/10, Lyrics 9.0/10, Vibe 10/10, Overall Score)
-  - Key Track Highlights list
-  - Platform streaming badges (Spotify, Apple Music, YouTube Music)
-  - Share & Bookmark buttons
-
-### 5. In-App Post Studio / Creator Modal (`PostPublisherModal.jsx`)
-- Interactive form to compose new blog posts without touching complex code:
-  - Title, Artist, Album, Category selector, Genre tags
-  - Album Cover Image URL generator/uploader
-  - Spotify Track/Album URI or URL input & Apple Music URL input
-  - Rating sliders (Production, Lyrics, Vibe, Overall)
-  - Markdown/Rich Text review content body
-  - Live post preview panel
-  - "Export JSON" button to copy/download ready-to-use post data.
-
-### 6. Curated Seed Content (`src/data/posts.json`)
-- High-quality pre-populated sample posts featuring real album reviews across New Music, Hidden Gems, and In-depth Reviews.
-
-### 7. Publishing & Deployment Guide (`PUBLISHING_GUIDE.md`)
-- Step-by-step instructions on deploying the Vite React app to **Vercel**, **Netlify**, or **GitHub Pages** for free with a custom domain or free subdomain.
+> [!IMPORTANT]
+> **Design Philosophy**: Minimalist, old-school, content-first aesthetic using the **Inter** typeface, high-contrast monochrome (black/grey/white) typography, and subtle CSS gradient accents derived from each album's artwork. Zero heavy JavaScript libraries or unnecessary animations.
 
 ---
 
-## Proposed File Structure
+## Open Questions
 
-```text
-d:\Review web app\
-├── package.json
-├── index.html
-├── vite.config.js
-├── src/
-│   ├── main.jsx
-│   ├── App.jsx
-│   ├── index.css
-│   ├── data/
-│   │   └── posts.json          # Pre-populated music reviews database
-│   ├── components/
-│   │   ├── Navbar.jsx          # Top navigation & search bar
-│   │   ├── HeroSection.jsx     # Featured review hero spotlight
-│   │   ├── FilterBar.jsx       # Category & genre filters
-│   │   ├── PostCard.jsx        # Individual music blog post card
-│   │   ├── PostDetailModal.jsx # Full review view with embedded players & ratings
-│   │   ├── PostPublisherModal.jsx # In-app review creator studio & JSON generator
-│   │   ├── RatingWidget.jsx    # Production/Lyrics/Vibe rating bars
-│   │   └── Footer.jsx          # Site footer & social links
-│   └── utils/
-│       └── spotifyHelper.js    # Helper to convert Spotify/Apple Music links to embeds
-└── PUBLISHING_GUIDE.md         # Deployment & hosting tutorial
-```
+- **GitHub Pages Domain Configuration**: Do you plan to host the site on a custom domain (e.g. `reviews.yourdomain.com`) or a standard GitHub Pages subdirectory URL (e.g. `https://<username>.github.io/<repository>/`)? We will configure `astro.config.mjs` with an adaptable `site` and `base` setting.
+
+---
+
+## Proposed Changes
+
+### Configuration & Project Setup
+
+#### [NEW] [package.json](file:///d:/Review%20web%20app/package.json)
+- Define dependencies for `astro`, `@astrojs/check`, `typescript`, and Zod validation tools.
+
+#### [NEW] [astro.config.mjs](file:///d:/Review%20web%20app/astro.config.mjs)
+- Configure Astro in SSG output mode, set up `site` URL for custom domain or GitHub Pages deployment.
+
+#### [NEW] [tsconfig.json](file:///d:/Review%20web%20app/tsconfig.json)
+- Setup TypeScript configuration extending `astro/tsconfigs/strict`.
+
+#### [NEW] [.github/workflows/deploy.yml](file:///d:/Review%20web%20app/.github/workflows/deploy.yml)
+- GitHub Actions workflow triggering on push to `main` branch to automatically build Astro SSG and deploy to GitHub Pages.
+
+---
+
+### Content Collections
+
+#### [NEW] [src/content/config.ts](file:///d:/Review%20web%20app/src/content/config.ts)
+- Define `reviews` Content Collection with Zod schema validating frontmatter:
+  - `title` (string)
+  - `artist` (string)
+  - `releaseYear` (number or string)
+  - `rating` (number, average score)
+  - `coverImage` (string)
+  - `spotifyId` (string, track or album ID)
+  - `pubDate` (date)
+  - `tags` (array of strings)
+  - `summary` (string)
+  - `spectrumRating` (array of 6 numbers over 10: Melody & Harmony, Production & Mixing, Lyrical Depth, Cohesiveness & Concept, Originality, Cultural Impact)
+
+#### [NEW] [src/content/reviews/to-pimp-a-butterfly.md](file:///d:/Review%20web%20app/src/content/reviews/to-pimp-a-butterfly.md)
+#### [NEW] [src/content/reviews/ok-computer.md](file:///d:/Review%20web%20app/src/content/reviews/ok-computer.md)
+#### [NEW] [src/content/reviews/blond.md](file:///d:/Review%20web%20app/src/content/reviews/blond.md)
+- Realistic sample Markdown review posts complete with full spectrum ratings, tags, Spotify IDs, and detailed write-ups.
+
+---
+
+### Styling & Layouts
+
+#### [NEW] [src/styles/global.css](file:///d:/Review%20web%20app/src/styles/global.css)
+- Implement minimalist CSS design system using the **Inter** font family, crisp black (`#0a0a0a`), dark charcoal (`#18181b`), muted border grey (`#27272a`), clean white text (`#f4f4f5`), and utility styles for album gradient accents.
+
+#### [NEW] [src/layouts/BaseLayout.astro](file:///d:/Review%20web%20app/src/layouts/BaseLayout.astro)
+- Primary HTML shell including Google Inter font imports, SEO meta tags, header navigation bar, and clean minimal footer.
+
+---
+
+### Components
+
+#### [NEW] [src/components/Header.astro](file:///d:/Review%20web%20app/src/components/Header.astro)
+- Clean, high-contrast navigation bar with site title and section links.
+
+#### [NEW] [src/components/Footer.astro](file:///d:/Review%20web%20app/src/components/Footer.astro)
+- Old-school minimalist footer with copyright and RSS feed notice.
+
+#### [NEW] [src/components/ReviewCard.astro](file:///d:/Review%20web%20app/src/components/ReviewCard.astro)
+- Lightweight review list card displaying album cover, title, artist, rating score badge, tags, publication date, and summary excerpt.
+
+#### [NEW] [src/components/SpectrumRadar.astro](file:///d:/Review%20web%20app/src/components/SpectrumRadar.astro)
+- Static, zero-JS inline SVG radar chart visualizing the 6 rating dimensions (Melody & Harmony, Production & Mixing, Lyrical Depth, Cohesiveness & Concept, Originality, Cultural Impact).
+
+#### [NEW] [src/components/SpotifyEmbed.astro](file:///d:/Review%20web%20app/src/components/SpotifyEmbed.astro)
+- Native responsive Spotify iFrame player with `loading="lazy"` attribute for optimized page load speeds.
+
+---
+
+### Pages
+
+#### [NEW] [src/pages/index.astro](file:///d:/Review%20web%20app/src/pages/index.astro)
+- Home page querying `getCollection('reviews')`, sorted by `pubDate` (newest first).
+- Minimalist static tag filtering UI allowing users to filter reviews by tag.
+
+#### [NEW] [src/pages/reviews/[...slug].astro](file:///d:/Review%20web%20app/src/pages/reviews/[...slug].astro)
+- Dynamic static route implementing `getStaticPaths()` for all Markdown posts.
+- Header displaying album cover, title, artist, release year, overall rating badge, and tags.
+- Dynamic subtle gradient backdrop derived from album theme.
+- Embedded `<SpectrumRadar />` and `<SpotifyEmbed />`.
+- Clean typography rendering of rendered Markdown article content (`<Content />`).
+
+---
+
+### Cleanup Legacy Files
+
+#### [DELETE] [index.html](file:///d:/Review%20web%20app/index.html)
+#### [DELETE] [js/](file:///d:/Review%20web%20app/js/)
+#### [DELETE] [styles/](file:///d:/Review%20web%20app/styles/)
+- Remove unused legacy vanilla draft files.
 
 ---
 
 ## Verification Plan
 
 ### Automated Verification
-- Run `npm run build` to verify clean compilation with zero lint or build errors.
-- Run `npm run dev` to verify dev server execution.
+- Run `npx astro check` to validate TypeScript and Zod Content Collection schemas.
+- Run `npm run build` (or `npx astro build`) to confirm Static Site Generation completes with 0 errors.
 
 ### Manual Verification
-- Test category switching (New Music, Hidden Gem, In-depth Review) and genre filtering.
-- Verify embedded Spotify and Apple Music iframe players load properly.
-- Test opening post detail modal and interacting with rating scores & streaming links.
-- Test creating a new post using the in-app Post Publisher Studio and verifying the live preview.
+- Run `npm run preview` to start local preview server.
+- Verify homepage renders all 3 sample reviews sorted by `pubDate` (newest first).
+- Test tag filtering link mechanics.
+- Inspect individual review pages (`/reviews/to-pimp-a-butterfly`, `/reviews/ok-computer`, etc.) to confirm SVG radar charts, Spotify embeds, and typography look sharp and load instantly.

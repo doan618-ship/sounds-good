@@ -1,73 +1,123 @@
-# SoundVault Music Space - Publishing & Deployment Guide
+# SoundSpec — GitHub Pages Publishing & Deployment Guide
 
-Congratulations! Your **SoundVault Music Space Web Blog** is ready to be published to the web. Follow these simple steps to launch your site live for free on **Vercel**, **Netlify**, or **GitHub Pages**.
-
----
-
-## 🚀 Option 1: Deploy on Vercel (Recommended - 2 Minutes)
-
-Vercel provides free, instant hosting with global CDN speed and automatic SSL security.
-
-### Steps:
-1. Push your repository to **GitHub** or **GitLab**.
-2. Sign in to [Vercel](https://vercel.com) using your GitHub account.
-3. Click **"Add New"** > **"Project"**.
-4. Import your `Review web app` repository.
-5. Leave the framework setting as **"Other"** or **"Static Site"**.
-6. Click **"Deploy"**.
-7. **Done!** Vercel will give you a live production URL (e.g. `soundvault-music.vercel.app`) with custom domain support.
+This guide details how to publish and deploy your **SoundSpec Music Review Archive** to **GitHub Pages** using automated GitHub Actions CI/CD workflows.
 
 ---
 
-## ⚡ Option 2: Deploy on Netlify (Drag & Drop or Git)
+## 🚀 Automated Deployment to GitHub Pages
 
-Netlify is another top-tier free static host.
+SoundSpec is built with **Astro (Static Site Generation)**. A pre-configured GitHub Actions workflow (`.github/workflows/deploy.yml`) automatically builds and deploys your site whenever you push changes to the `main` branch.
 
-### Quick Drag & Drop Method:
-1. Go to [Netlify Drop](https://app.netlify.com/drop).
-2. Drag and drop your entire `Review web app` project folder directly into the browser.
-3. Your web blog is instantly live!
-
-### Git Method:
-1. Connect your repository to Netlify.
-2. Set build directory to `./` or leave blank.
-3. Click **"Deploy Site"**.
+### Prerequisites
+- A **GitHub Account**.
+- Git installed on your computer.
 
 ---
 
-## 🐙 Option 3: Deploy on GitHub Pages (Free GitHub Hosting)
+## 📋 Step-by-Step Deployment Setup
 
-If your code is stored on GitHub, you can host it directly from your repository:
+### 1. Initialize & Push Your Repository to GitHub
+If you haven't already pushed your project to GitHub:
 
-1. Push your code to a GitHub repository (e.g. `my-music-blog`).
-2. Go to repository **Settings** > **Pages** (under Code and automation).
-3. Under **Build and deployment** > **Source**, select **Deploy from a branch**.
-4. Choose the `main` branch and `/ (root)` folder.
-5. Click **Save**.
-6. Within 1 minute, your site will be live at `https://<your-username>.github.io/my-music-blog/`.
+```bash
+git init
+git add .
+git commit -m "Initial commit of SoundSpec review app"
+git branch -M main
+git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+git push -u origin main
+```
+
+### 2. Configure GitHub Repository Settings
+1. Go to your repository on GitHub: `https://github.com/<your-username>/<your-repo-name>`.
+2. Click **Settings** (top navigation tab).
+3. Under **Code and automation** in the left sidebar, click **Pages**.
+4. Under **Build and deployment**:
+   - **Source**: Select **GitHub Actions** (from the drop-down menu).
+5. No extra build command configuration is required — GitHub Actions handles everything automatically!
+
+### 3. Update `astro.config.mjs` (If deploying to a repository subpath)
+If your site is hosted at `https://<your-username>.github.io/<your-repo-name>/`, update `astro.config.mjs`:
+
+```js
+import { defineConfig } from 'astro/config';
+
+export default defineConfig({
+  site: 'https://<your-username>.github.io',
+  base: '/<your-repo-name>',
+  output: 'static',
+});
+```
+
+*Note: If deploying to a custom domain (e.g. `https://reviews.yourdomain.com`), set `site: 'https://reviews.yourdomain.com'` and omit `base`.*
 
 ---
 
-## 📝 Adding New Music & Reviews
+## 🔄 How Automated Deployment Works
 
-You have two easy ways to add new reviews to your blog:
-
-### Method A: Use the In-App Post Studio
-1. Open your live blog.
-2. Click the **"+ Add Review"** button in the header.
-3. Fill out the album details, rating scores (Production, Lyrics, Vibe), Spotify/Apple Music URLs, and review text.
-4. Click **"Publish Post"** (saves locally on your device immediately) or click **"Copy Post JSON"**.
-
-### Method B: Update `js/data/posts.js`
-1. Open `js/data/posts.js` in your code editor.
-2. Paste the copied JSON entry into the `INITIAL_POSTS` array.
-3. Commit and push to Git — your live site will automatically update!
+1. Every time you push to the `main` branch (or manually trigger via **Actions** tab in GitHub):
+   - `.github/workflows/deploy.yml` starts automatically.
+   - It runs `withastro/action` to install dependencies, validate Content Collections (`astro check`), and compile static HTML files into `dist/`.
+   - `actions/deploy-pages` deploys the compiled output to GitHub Pages within seconds.
+2. Your live website will be accessible at:
+   - `https://<your-username>.github.io/<your-repo-name>/` (or your custom domain).
 
 ---
 
-## 🎨 Features Included
-- **🔥 New Music, 💎 Hidden Gems, and 📝 In-Depth Reviews** categorization.
-- **Embedded Spotify & Apple Music iFrame Players** with tab switching.
-- **Interactive Score Breakdown Sliders** for Production, Lyrics, Vibe, & Overall Rating.
-- **Live Search & Filter Toolbar** (by genre, artist, album, rating, or release date).
-- **Glassmorphism Dark Aesthetics** with glowing music app accents.
+## 📝 Adding & Managing Album Reviews
+
+Reviews are stored as Markdown files in `src/content/reviews/`. Astro validates all frontmatter metadata using the Zod schema defined in `src/content.config.ts`.
+
+### Create a New Review File
+Add a new Markdown file (e.g., `src/content/reviews/my-album.md`):
+
+```markdown
+---
+title: "Album Title"
+artist: "Artist Name"
+releaseYear: 2024
+rating: 9.2
+coverImage: "https://images.unsplash.com/photo-..."
+spotifyId: "4Rzn2flUjhVjG852yaL9Zb"
+pubDate: 2026-07-25
+tags: ["Hip-Hop", "Jazz Fusion", "Essential"]
+summary: "A brief 1-2 sentence excerpt summarizing the album."
+accentColor: "rgba(34, 197, 94, 0.25)"
+bgColors: ["#123820", "#261533"]
+spectrumRating: [9.5, 9.0, 9.5, 9.0, 9.0, 9.0]
+---
+
+Write your full album review article here using standard Markdown syntax.
+
+## Dynamic Production & Mixing
+Detailed discussion...
+
+## Standout Tracks
+- Track 1
+- Track 2
+```
+
+### Spectrum Rating 6-Axis Scale
+The `spectrumRating` array consists of 6 scores out of 10.0 in the following order:
+1. **Melody & Harmony**
+2. **Production & Mixing**
+3. **Lyrical Depth**
+4. **Cohesiveness & Concept**
+5. **Originality**
+6. **Cultural Impact**
+
+Once committed and pushed to `main`, GitHub Pages will update your site automatically!
+
+---
+
+## 🧪 Local Testing Before Publishing
+
+Before pushing changes to GitHub, test your build locally:
+
+```bash
+# Type check and build static files
+npm run build
+
+# Preview production build locally
+npm run preview
+```

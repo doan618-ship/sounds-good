@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch all posts and sort by pubDate (newest first)
+const allReviews = await getCollection('reviews');
+const sortedReviews = allReviews.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Collect unique tags
+const allTags = Array.from(
+  new Set(sortedReviews.flatMap((r) => r.data.tags))
+).sort();
+---
+
+<BaseLayout 
+  title="SoundSpec — Music Review Archive" 
+  description="Minimalist, content-first album reviews and sound spectrum ratings."
+>
+  <section class="hero-section">
+    <h1 class="hero-title">MUSIC REVIEWS & SOUND SPECTRUM</h1>
+    <p class="hero-subtitle">
+      Old-school, minimalist, and content-first album criticism. Ultra-fast static performance.
+    </p>
+  </section>
+
+  <section class="filter-section" id="tags">
+    <div class="filter-header">
+      <span class="filter-label">Filter by Tag:</span>
+      <div class="tag-filter-container">
+        <button class="tag-btn active" data-tag="all">All ({sortedReviews.length})</button>
+        {allTags.map((tag) => (
+          <button class="tag-btn" data-tag={tag}>
+            {tag}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews-grid" id="reviews-list">
+    {sortedReviews.map((review) => (
+      <div class="card-item" data-tags={review.data.tags.join(',')}>
+        <ReviewCard review={review} />
+      </div>
+    ))}
+  </section>
+</BaseLayout>
+
+<script>
+  // Pure static/vanilla tag filter logic with zero overhead
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.tag-btn');
+    const items = document.querySelectorAll<HTMLDivElement>('.card-item');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const selectedTag = btn.getAttribute('data-tag');
+
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        items.forEach((item) => {
+          const itemTags = item.getAttribute('data-tags')?.split(',') || [];
+          if (selectedTag === 'all' || itemTags.includes(selectedTag!)) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  .hero-section {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  @media (min-width: 640px) {
+    .hero-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  .hero-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin-bottom: 0;
+  }
+
+  /* Tag Filter Toolbar */
+  .filter-section {
+    margin-bottom: 2rem;
+  }
+
+  .filter-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .filter-header {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .filter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .tag-filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag-btn {
+    background-color: var(--bg-card);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .tag-btn:hover {
+    background-color: var(--bg-card-hover);
+    color: var(--text-primary);
+  }
+
+  .tag-btn.active {
+    background-color: var(--color-white);
+    color: var(--color-black);
+    border-color: var(--color-white);
+    font-weight: 700;
+  }
+
+  /* Reviews Grid */
+  .reviews-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+</style>

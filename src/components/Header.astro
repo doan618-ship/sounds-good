@@ -1,0 +1,69 @@
+---
+---
+
+<header class="site-header">
+  <div class="container header-content">
+    <a href="/" class="site-logo">
+      <span class="logo-bold">SOUND</span><span class="logo-light">SPEC</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/">Reviews</a>
+      <a href="/about">About</a>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="github-link">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-primary);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    padding: 1.25rem 0;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-logo {
+    font-size: 1.25rem;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .logo-bold {
+    color: var(--text-primary);
+  }
+
+  .logo-light {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
+    transition: color 0.15s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--text-primary);
+  }
+
+  .github-link {
+    color: var(--text-muted) !important;
+  }
+</style>

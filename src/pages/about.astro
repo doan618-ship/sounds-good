@@ -1,0 +1,333 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const spectrumAxes = [
+  {
+    icon: 'bi-music-note-beamed',
+    title: 'Melody & Harmony',
+    description: 'Evaluates hooks, chord progressions, vocal pitch arrangements, melodic memorable lines, and tonal resonance throughout the project.',
+  },
+  {
+    icon: 'bi-sliders',
+    title: 'Production & Mixing',
+    description: 'Examines sound design, spatial engineering, frequency separation, acoustic warmth, dynamic range, and technical mixing balance.',
+  },
+  {
+    icon: 'bi-file-earmark-text',
+    title: 'Lyrical Depth',
+    description: 'Measures narrative storytelling, poetic phrasing, thematic vulnerability, metaphorical imagery, and literary substance.',
+  },
+  {
+    icon: 'bi-layers-half',
+    title: 'Cohesiveness & Concept',
+    description: 'Assesses album sequence, structural pacing, track-to-track transitions, and overarching thematic or sonic unity.',
+  },
+  {
+    icon: 'bi-lightbulb',
+    title: 'Originality',
+    description: 'Ponders sonic innovation, genre boundary-pushing, artistic courage, and distinct creative signature versus tired conventions.',
+  },
+  {
+    icon: 'bi-globe',
+    title: 'Cultural Impact',
+    description: 'Reflects historical footprint, influence on contemporary artists, movement leadership, timelessness, and cultural resonance.',
+  },
+];
+
+const ratingTiers = [
+  {
+    score: '9.0 – 10.0',
+    label: 'Masterpiece / Essential',
+    isHigh: true,
+    description: 'A benchmark work of art that reshapes genre boundaries and rewards endless re-listens.',
+  },
+  {
+    score: '8.0 – 8.9',
+    label: 'Great / Highly Recommended',
+    isHigh: true,
+    description: 'Exceptional craft, strong vision, and memorable execution across almost every track.',
+  },
+  {
+    score: '7.0 – 7.9',
+    label: 'Good / Solid Effort',
+    isHigh: false,
+    description: 'Enjoyable project with impressive highlights, though slightly held back by consistency.',
+  },
+  {
+    score: '5.0 – 6.9',
+    label: 'Average / Mixed',
+    isHigh: false,
+    description: 'Pockets of promise or decent production weighed down by filler or unfocused concepts.',
+  },
+  {
+    score: 'Below 5.0',
+    label: 'Flawed / Uninspired',
+    isHigh: false,
+    description: 'Lacks technical polish, creative ambition, or genuine emotional engagement.',
+  },
+];
+---
+
+<BaseLayout 
+  title="About SoundSpec"
+  description="Learn about the SoundSpec music review philosophy, the 6-axis Sound Spectrum model, and how scores are calculated."
+>
+  <div class="about-container">
+    <!-- Hero Banner -->
+    <header class="about-hero">
+      <h1 class="page-title">ABOUT SOUNDSPEC</h1>
+      <p class="about-subtitle">
+        A minimalist, content-first platform dedicated to high-fidelity album criticism and multidimensional sonic analysis.
+      </p>
+    </header>
+
+    <hr class="section-divider" />
+
+    <!-- Mission & Why -->
+    <section class="about-section">
+      <h2 class="section-heading">Why SoundSpec Exists</h2>
+      <div class="prose-block">
+        <p>
+          In an era dominated by 15-second social media clips, algorithmic playlist shuffle, and clickbait outrage, 
+          the art of listening to a full-length album from start to finish is often overlooked.
+        </p>
+        <p>
+          <strong>SoundSpec</strong> was built to provide a clean, distraction-free environment for music lovers who appreciate 
+          thoughtful album criticism. There are no pop-up ads, no infinite feeds, and no bloated trackers—just lightning-fast static pages, 
+          deep writing, and transparent evaluation criteria.
+        </p>
+      </div>
+    </section>
+
+    <!-- Spectrum Model Explanation -->
+    <section class="about-section">
+      <h2 class="section-heading">The 6-Axis Sound Spectrum Model</h2>
+      <p class="section-lead">
+        Rather than relying on a single arbitrary rating number, every review features a 6-axis radar breakdown to capture the multidimensional nature of music.
+      </p>
+
+      <div class="spectrum-grid">
+        {spectrumAxes.map((axis) => (
+          <div class="spectrum-card">
+            <div class="card-icon-box">
+              <i class={`bi ${axis.icon} axis-icon`}></i>
+            </div>
+            <div class="card-info">
+              <h3 class="axis-title">{axis.title}</h3>
+              <p class="axis-desc">{axis.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Overall Rating Breakdown -->
+    <section class="about-section">
+      <h2 class="section-heading">Understanding Overall Scores</h2>
+      <p class="section-lead">
+        Overall scores range from <strong>0.0 to 10.0</strong>. Scores are assigned holistically based on total artistic accomplishment and weighted spectrum performance.
+      </p>
+
+      <div class="rating-tiers-list">
+        {ratingTiers.map((tier) => (
+          <div class="tier-item">
+            <div class="tier-score-badge">
+              <span class={`tier-val ${tier.isHigh ? 'tier-high' : ''}`}>{tier.score}</span>
+              {tier.isHigh && <i class="bi bi-hand-thumbs-up thumbs-icon"></i>}
+            </div>
+            <div class="tier-info">
+              <h3 class="tier-label">{tier.label}</h3>
+              <p class="tier-desc">{tier.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .about-hero {
+    padding-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+
+  @media (min-width: 640px) {
+    .page-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  .about-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  .section-divider {
+    border-top: 1px solid var(--border-color);
+    margin: 2rem 0 2.5rem 0;
+  }
+
+  .about-section {
+    margin-bottom: 3rem;
+  }
+
+  .section-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    border-left: 3px solid var(--border-light);
+    padding-left: 0.75rem;
+  }
+
+  .section-lead {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .prose-block p {
+    line-height: 1.75;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .prose-block strong {
+    color: var(--text-primary);
+  }
+
+  /* 6-Axis Grid */
+  .spectrum-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .spectrum-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .spectrum-card {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1.25rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+  }
+
+  .card-icon-box {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+  }
+
+  .axis-icon {
+    font-size: 1.25rem;
+  }
+
+  .card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .axis-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .axis-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* Rating Tiers List */
+  .rating-tiers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tier-item {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .tier-item {
+      grid-template-columns: 180px 1fr;
+    }
+  }
+
+  .tier-score-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tier-val {
+    font-size: 1.1rem;
+    font-weight: 800;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+  }
+
+  .tier-high {
+    color: var(--color-accent-high) !important;
+  }
+
+  .thumbs-icon {
+    color: var(--color-accent-high);
+    font-size: 1.1rem;
+  }
+
+  .tier-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+  }
+
+  .tier-desc {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+</style>
